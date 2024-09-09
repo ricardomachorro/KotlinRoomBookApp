@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BookOrganizationApp</string>
+    <string name="mainNavDrawerOptionHomeOption">Home</string>
+    <string name="mainNavDrawerOptionHomeOptionDescription">home_option</string>
+    <string name="mainNavDrawerOptionNewBookOption">New Book</string>
+    <string name="mainNavDrawerOptionNewBookOptionDescription">new_book</string>
+    <string name="mainNavDrawerOptionBookListOption">Book List</string>
+    <string name="mainNavDrawerOptionBookListOptionDescription">book_list</string>
+</resources>
