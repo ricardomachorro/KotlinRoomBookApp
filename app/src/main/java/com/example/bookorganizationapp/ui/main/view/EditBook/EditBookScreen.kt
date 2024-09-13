@@ -181,7 +181,17 @@ fun FormEditBook(state: BookState,onEvent: (BookEvent) -> Unit){
                         .fillMaxWidth(),
                     value = state.last_page_read.toString(),
                     onValueChange = {
-                        onEvent(BookEvent.SetPages(it.toInt()))
+                        if (!it.isBlank()){
+                            var finalValue =""
+                            if (it.startsWith("0")){
+                                finalValue = it.substring(1,it.length)
+                            }else{
+                                finalValue = it
+                            }
+                            onEvent(BookEvent.SetPages(finalValue.toInt()))
+                        }else{
+                            onEvent(BookEvent.SetPages(0))
+                        }
                     },
                     label = { Text("Paginas") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
