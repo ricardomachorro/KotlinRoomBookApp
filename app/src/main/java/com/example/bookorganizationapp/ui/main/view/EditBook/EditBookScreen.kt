@@ -65,6 +65,8 @@ fun FormEditBook(state: BookState,onEvent: (BookEvent) -> Unit){
 
     val tool = CalendarTools();
 
+    var numberPages = state.last_page_read.toString()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -179,9 +181,19 @@ fun FormEditBook(state: BookState,onEvent: (BookEvent) -> Unit){
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    value = state.last_page_read.toString(),
+                    value = numberPages,
                     onValueChange = {
-                        onEvent(BookEvent.SetPages(it.toInt()))
+                        if (!it.isBlank()){
+                            var finalValue =""
+                            if (it.startsWith("0")){
+                                finalValue = it.substring(1,it.length)
+                            }else{
+                                finalValue = it
+                            }
+                        onEvent(BookEvent.SetPages(finalValue.toInt()))
+                        }else{
+                            onEvent(BookEvent.SetPages(0))
+                        }
                     },
                     label = { Text("Paginas") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
