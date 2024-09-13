@@ -44,7 +44,9 @@ fun NewBookScreen(drawerState: DrawerState, scope: CoroutineScope, state: BookSt
 
 @Composable
 fun formNewBook( state: BookState,onEvent: (BookEvent) -> Unit){
-    
+
+
+    //First version
 
     Box(
         modifier = Modifier
