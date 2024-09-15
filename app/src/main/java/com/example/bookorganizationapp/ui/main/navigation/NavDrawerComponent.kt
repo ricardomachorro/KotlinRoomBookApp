@@ -5,6 +5,7 @@ import android.view.Menu
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,6 +22,7 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -99,6 +101,13 @@ fun NavDrawerComponent(state: BookState, libraryState: LibraryState, onEvent: (B
     }
 }
 
+
+
+
+
+
+
+/*
 @Composable
 fun MainScreen(state: BookState, libraryState: LibraryState, onEvent: (BookEvent) -> Unit){
 
@@ -145,4 +154,91 @@ fun CostumeTopBar(
         }
     )
     
+}
+*/
+
+
+@Composable
+fun MainScreen(state: BookState, libraryState: LibraryState, onEvent: (BookEvent) -> Unit){
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+
+        drawerContent = {
+            DrawerContontent()
+        }
+    ){
+
+        Scaffold(
+            topBar = {
+                CostumeTopBar(scope = scope, drawerState = drawerState )
+            }
+        ) {
+
+            innerPadding ->
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+
+                ) {
+
+            }
+        }
+
+    }
+
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CostumeTopBar(
+    scope: CoroutineScope,
+    drawerState: DrawerState
+){
+
+    TopAppBar(
+        title = {Text("Organization App")},
+        navigationIcon = {
+            IconButton(onClick = {
+                scope.launch {
+                    drawerState.apply {
+                        if (isClosed) open() else close()
+                    }
+                }
+            }) {
+
+                Icon(imageVector =  Icons.Filled.Menu,
+                    contentDescription = "")
+            }
+        }
+    )
+
+
+}
+
+@Composable
+fun DrawerContontent(){
+
+    ModalDrawerSheet {
+
+
+        Column(){
+            DrawerParams.drawerButtons.forEach {
+                    item ->
+                TextButton(onClick = { /*TODO*/ }) {
+                    Text(
+                        modifier= Modifier.fillMaxWidth(),
+                        text = stringResource(id = item.title))
+                }
+            }
+        }
+    }
+
+
 }
