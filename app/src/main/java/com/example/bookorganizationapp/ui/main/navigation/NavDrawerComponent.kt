@@ -3,6 +3,8 @@ package com.example.bookorganizationapp.ui.main.navigation
 import android.annotation.SuppressLint
 import android.view.Menu
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -39,6 +41,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,6 +49,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.bookorganizationapp.R
 import com.example.bookorganizationapp.data.internal.BookEvent
@@ -242,14 +246,21 @@ fun CostumeTopBar(
 
 
 @Composable
-fun DrawerItem(item: DestinosNavigationDrawer){
+fun DrawerItem(
+    item: DestinosNavigationDrawer,
+    selected:Boolean,
+    onItemClick:(DestinosNavigationDrawer) -> Unit
+    ){
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp)
             .padding(6.dp)
             .clip(RoundedCornerShape(12))
+            .background(if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
+                else Color.Transparent)
             .padding(8.dp)
+            .clickable { onItemClick(item) }
     ) {
         Image(
             painterResource(id = item.icon),
@@ -293,22 +304,31 @@ fun DrawerContent(
                 .fillMaxWidth()
                 .height(15.dp))
             
-            /*
-            DrawerParams.drawerButtons.forEach {
-                    item ->
-                TextButton(onClick = { /*TODO*/ }) {
-                    Text(
-                        modifier= Modifier.fillMaxWidth(),
-                        text = stringResource(id = item.title))
-                }
-            }*/
-            
+
+           val currentRoute = currentRoute(navController)
             menu_items.forEach { 
                 item ->
-                DrawerItem(item = item)
+                DrawerItem(
+                    item = item,
+                    selected = currentRoute == item.ruta){
+                    navController.navigate(item.ruta){
+                        launchSingleTop = true
+                    }
+                    scope.launch {
+                        drawerState.close()
+                    }
+                }
             }
         }
     }
 
+
+}
+
+
+@Composable
+fun currentRoute(navController: NavHostController):String?{
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    return navBackStackEntry?.destination?.route
 
 }
