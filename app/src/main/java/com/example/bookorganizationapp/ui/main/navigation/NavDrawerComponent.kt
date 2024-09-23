@@ -273,7 +273,9 @@ fun DrawerItem(
 
         Text(
             text= item.title,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            color = if (selected) MaterialTheme.colorScheme.secondary
+            else MaterialTheme.colorScheme.onBackground
         )
     }
 
