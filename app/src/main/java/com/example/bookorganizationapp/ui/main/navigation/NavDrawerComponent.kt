@@ -2,13 +2,17 @@ package com.example.bookorganizationapp.ui.main.navigation
 
 import android.annotation.SuppressLint
 import android.view.Menu
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerState
@@ -16,6 +20,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -33,11 +38,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.bookorganizationapp.R
 import com.example.bookorganizationapp.data.internal.BookEvent
 import com.example.bookorganizationapp.data.internal.BookState
 import com.example.bookorganizationapp.data.internal.LibraryState
@@ -161,14 +171,21 @@ fun CostumeTopBar(
 @Composable
 fun MainScreen(state: BookState, libraryState: LibraryState, onEvent: (BookEvent) -> Unit){
 
+
+    val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val navigationItems =  listOf(
+        DestinosNavigationDrawer.Pantalla1,
+        DestinosNavigationDrawer.Pantalla2,
+        DestinosNavigationDrawer.Pantalla3
+    )
 
     ModalNavigationDrawer(
         drawerState = drawerState,
 
         drawerContent = {
-            DrawerContontent()
+            DrawerContent(scope = scope,drawerState = drawerState,navController = navController,menu_items = navigationItems)
         }
     ){
 
@@ -186,7 +203,7 @@ fun MainScreen(state: BookState, libraryState: LibraryState, onEvent: (BookEvent
                     .padding(innerPadding),
 
                 ) {
-
+                   NavigationHost(navController = navController)
             }
         }
 
@@ -222,13 +239,61 @@ fun CostumeTopBar(
 
 }
 
+
+
 @Composable
-fun DrawerContontent(){
+fun DrawerItem(item: DestinosNavigationDrawer){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .padding(6.dp)
+            .clip(RoundedCornerShape(12))
+            .padding(8.dp)
+    ) {
+        Image(
+            painterResource(id = item.icon),
+            contentDescription = ""
+        )
+
+        Spacer(modifier = Modifier
+            .width(12.dp))
+
+
+        Text(
+            text= item.title,
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+
+}
+
+@Composable
+fun DrawerContent(
+    scope: CoroutineScope,
+    drawerState: DrawerState,
+    navController: NavHostController,
+    menu_items:List<DestinosNavigationDrawer>){
 
     ModalDrawerSheet {
 
 
         Column(){
+
+            Image(
+                painterResource(id = R.drawable.home),
+                contentDescription = "",
+                modifier = Modifier
+                    .height(160.dp)
+                    .fillMaxWidth(),
+                contentScale = ContentScale.FillWidth
+            )
+
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(15.dp))
+            
+            /*
             DrawerParams.drawerButtons.forEach {
                     item ->
                 TextButton(onClick = { /*TODO*/ }) {
@@ -236,6 +301,11 @@ fun DrawerContontent(){
                         modifier= Modifier.fillMaxWidth(),
                         text = stringResource(id = item.title))
                 }
+            }*/
+            
+            menu_items.forEach { 
+                item ->
+                DrawerItem(item = item)
             }
         }
     }

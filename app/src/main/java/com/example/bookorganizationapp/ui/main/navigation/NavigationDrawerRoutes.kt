@@ -37,3 +37,24 @@ fun NavigationDrawerRoutes(navController: NavHostController, drawerState: Drawer
         }
     }
 }
+
+@Composable
+fun NavigationHost(navController: NavHostController){
+    NavHost(navController = navController, startDestination = DestinosNavigationDrawer.Pantalla1.ruta) {
+
+        composable(DestinosNavigationDrawer.Pantalla1.ruta){
+
+        }
+
+        composable(DestinosNavigationDrawer.Pantalla2.ruta){
+
+        }
+
+        composable(DestinosNavigationDrawer.Pantalla3.ruta){
+
+        }
+
+
+    }
+
+}
