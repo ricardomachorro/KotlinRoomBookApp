@@ -21,7 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.bookorganizationapp.R
+import com.example.bookorganizationapp.ui.main.navigation.NavigationHost
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -76,5 +78,56 @@ fun ScaffoldTemplate(drawerState: DrawerState, scope: CoroutineScope, content: @
         }
 
     }
+
+}
+
+
+@Composable
+fun NewScaffoldTemplate(scope:CoroutineScope,drawerState: DrawerState,navController:NavHostController){
+
+    Scaffold(
+        topBar = {
+            CostumeTopBar(scope = scope, drawerState = drawerState )
+        }
+    ) {
+
+            innerPadding ->
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+
+            ) {
+            NavigationHost(navController = navController)
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CostumeTopBar(
+    scope: CoroutineScope,
+    drawerState: DrawerState
+){
+
+    TopAppBar(
+        title = {Text("Organization App")},
+        navigationIcon = {
+            IconButton(onClick = {
+                scope.launch {
+                    drawerState.apply {
+                        if (isClosed) open() else close()
+                    }
+                }
+            }) {
+
+                Icon(imageVector =  Icons.Filled.Menu,
+                    contentDescription = "")
+            }
+        }
+    )
+
 
 }

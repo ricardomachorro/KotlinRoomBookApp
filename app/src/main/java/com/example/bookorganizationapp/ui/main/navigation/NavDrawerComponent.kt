@@ -55,10 +55,12 @@ import com.example.bookorganizationapp.R
 import com.example.bookorganizationapp.data.internal.BookEvent
 import com.example.bookorganizationapp.data.internal.BookState
 import com.example.bookorganizationapp.data.internal.LibraryState
+import com.example.bookorganizationapp.ui.main.common.NewScaffoldTemplate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
+/*
 @Composable
 fun NavDrawerComponent(state: BookState, libraryState: LibraryState, onEvent: (BookEvent) -> Unit){
 
@@ -113,7 +115,7 @@ fun NavDrawerComponent(state: BookState, libraryState: LibraryState, onEvent: (B
         NavigationDrawerRoutes(navController = navHostController , drawerState = drawerState , scope = scope,state=state,library =libraryState,onEvent=onEvent)
 
     }
-}
+}*/
 
 
 
@@ -193,55 +195,14 @@ fun MainScreen(state: BookState, libraryState: LibraryState, onEvent: (BookEvent
         }
     ){
 
-        Scaffold(
-            topBar = {
-                CostumeTopBar(scope = scope, drawerState = drawerState )
-            }
-        ) {
-
-            innerPadding ->
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-
-                ) {
-                   NavigationHost(navController = navController)
-            }
-        }
+        NewScaffoldTemplate(scope=scope, drawerState = drawerState,navController=navController)
 
     }
 
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CostumeTopBar(
-    scope: CoroutineScope,
-    drawerState: DrawerState
-){
 
-    TopAppBar(
-        title = {Text("Organization App")},
-        navigationIcon = {
-            IconButton(onClick = {
-                scope.launch {
-                    drawerState.apply {
-                        if (isClosed) open() else close()
-                    }
-                }
-            }) {
-
-                Icon(imageVector =  Icons.Filled.Menu,
-                    contentDescription = "")
-            }
-        }
-    )
-
-
-}
 
 
 
