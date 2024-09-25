@@ -181,12 +181,13 @@ fun MainScreen(state: BookState, libraryState: LibraryState, onEvent: (BookEvent
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val navigationItems =  listOf(
+    /*val navigationItems =  listOf(
         DestinosNavigationDrawer.Pantalla1,
         DestinosNavigationDrawer.Pantalla2,
         DestinosNavigationDrawer.Pantalla3
-    )
+    )*/
 
+    val navigationItems = DrawerParams.drawerButtons
     ModalNavigationDrawer(
         drawerState = drawerState,
 
@@ -208,9 +209,9 @@ fun MainScreen(state: BookState, libraryState: LibraryState, onEvent: (BookEvent
 
 @Composable
 fun DrawerItem(
-    item: DestinosNavigationDrawer,
+    item: MainNavItem<MainNavOptions>,
     selected:Boolean,
-    onItemClick:(DestinosNavigationDrawer) -> Unit
+    onItemClick:(MainNavItem<MainNavOptions>) -> Unit
     ){
     Row(
         modifier = Modifier
@@ -218,13 +219,15 @@ fun DrawerItem(
             .height(56.dp)
             .padding(6.dp)
             .clip(RoundedCornerShape(12))
-            .background(if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
-                else Color.Transparent)
+            .background(
+                if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
+                else Color.Transparent
+            )
             .padding(8.dp)
             .clickable { onItemClick(item) }
     ) {
         Image(
-            painterResource(id = item.icon),
+            painterResource(id = item.selectedIcon),
             contentDescription = ""
         )
 
@@ -233,7 +236,7 @@ fun DrawerItem(
 
 
         Text(
-            text= item.title,
+            text= stringResource(id =item.title),
             style = MaterialTheme.typography.bodyMedium,
             color = if (selected) MaterialTheme.colorScheme.secondary
             else MaterialTheme.colorScheme.onBackground
@@ -247,7 +250,9 @@ fun DrawerContent(
     scope: CoroutineScope,
     drawerState: DrawerState,
     navController: NavHostController,
-    menu_items:List<DestinosNavigationDrawer>){
+    menu_items:ArrayList<MainNavItem<MainNavOptions>>
+    //menu_items:List<DestinosNavigationDrawer>
+    ){
 
     ModalDrawerSheet {
 
@@ -255,7 +260,7 @@ fun DrawerContent(
         Column(){
 
             Image(
-                painterResource(id = R.drawable.home),
+                painterResource(id = R.drawable.dino_book_portrait),
                 contentDescription = "",
                 modifier = Modifier
                     .height(160.dp)
@@ -269,7 +274,22 @@ fun DrawerContent(
             
 
            val currentRoute = currentRoute(navController)
-            menu_items.forEach { 
+
+
+            menu_items.forEach{
+                item ->
+                DrawerItem(
+                    item = item,
+                    selected = currentRoute == item.drawerOption.name){
+                    navController.navigate(item.drawerOption.name){
+                        launchSingleTop = true
+                    }
+                    scope.launch {
+                        drawerState.close()
+                    }
+                }
+            }
+           /* menu_items.forEach {
                 item ->
                 DrawerItem(
                     item = item,
@@ -281,7 +301,7 @@ fun DrawerContent(
                         drawerState.close()
                     }
                 }
-            }
+            }*/
         }
     }
 
