@@ -30,10 +30,13 @@ import kotlinx.coroutines.CoroutineScope
 
 
 @Composable
-fun NewBookScreen(drawerState: DrawerState, scope: CoroutineScope, state: BookState, onEvent: (BookEvent) -> Unit){
-   ScaffoldTemplate(drawerState,scope) {
+fun NewBookScreen(
+    //drawerState: DrawerState, scope: CoroutineScope,
+    state: BookState, onEvent: (BookEvent) -> Unit){
+   /*ScaffoldTemplate(drawerState,scope) {
        formNewBook(state= state,onEvent= onEvent)
-   }
+   }*/
+    formNewBook(state= state,onEvent= onEvent)
 }
 
 

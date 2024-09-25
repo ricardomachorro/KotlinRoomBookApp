@@ -15,6 +15,7 @@ import com.example.bookorganizationapp.ui.main.view.NewBook.NewBookScreen
 import kotlinx.coroutines.CoroutineScope
 
 
+/*
 @Composable
 fun NavigationDrawerRoutes(navController: NavHostController, drawerState: DrawerState, scope: CoroutineScope, state: BookState, library:LibraryState,onEvent: (BookEvent) -> Unit){
     NavHost(navController = navController, startDestination = MainNavOptions.LandingScreen.name){
@@ -36,22 +37,27 @@ fun NavigationDrawerRoutes(navController: NavHostController, drawerState: Drawer
             EditBookScreen(drawerState = drawerState, scope = scope ,state=state, onEvent=onEvent)
         }
     }
-}
+}*/
 
 @Composable
-fun NavigationHost(navController: NavHostController){
-    NavHost(navController = navController, startDestination = DestinosNavigationDrawer.Pantalla1.ruta) {
+fun NavigationHost(navController: NavHostController,scope: CoroutineScope, state: BookState, library:LibraryState,onEvent: (BookEvent) -> Unit){
+    NavHost(navController = navController, startDestination = MainNavOptions.LandingScreen.name) {
 
-        composable(DestinosNavigationDrawer.Pantalla1.ruta){
-
-        }
-
-        composable(DestinosNavigationDrawer.Pantalla2.ruta){
+        composable(MainNavOptions.LandingScreen.name){
+            LandingScreen(navController = navController, state = state, library =library,onEvent = onEvent )
 
         }
 
-        composable(DestinosNavigationDrawer.Pantalla3.ruta){
+        composable(MainNavOptions.NewEntranceBook.name){
+            NewBookScreen(state = state,onEvent = onEvent)
+        }
 
+        composable(MainNavOptions.BookList.name){
+            BookListScren(navController = navController,  state = state,onEvent =onEvent)
+        }
+
+        composable("BookModification"){
+            EditBookScreen(state =state, onEvent = onEvent)
         }
 
 

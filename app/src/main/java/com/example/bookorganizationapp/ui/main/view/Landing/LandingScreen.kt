@@ -28,10 +28,13 @@ import kotlinx.coroutines.CoroutineScope
 
 
 @Composable
-fun LandingScreen(navController: NavController,drawerState: DrawerState, scope: CoroutineScope, state: BookState,library:LibraryState, onEvent: (BookEvent) -> Unit){
-    ScaffoldTemplate(drawerState,scope) {
+fun LandingScreen(navController: NavController,
+                 // drawerState: DrawerState, scope: CoroutineScope,
+                  state: BookState,library:LibraryState, onEvent: (BookEvent) -> Unit){
+   /* ScaffoldTemplate(drawerState,scope) {
        ResumeScreen(navController,state,library,onEvent)
-    }
+    }*/
+    ResumeScreen(navController,state,library,onEvent)
 }
 
 

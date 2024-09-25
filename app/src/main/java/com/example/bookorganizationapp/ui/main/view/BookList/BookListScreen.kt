@@ -34,10 +34,13 @@ import kotlinx.coroutines.CoroutineScope
 
 
 @Composable
-fun BookListScren(navController: NavController,drawerState: DrawerState, scope: CoroutineScope, state: BookState, onEvent: (BookEvent) -> Unit){
-    ScaffoldTemplate(drawerState,scope) {
+fun BookListScren(navController: NavController,
+                  //drawerState: DrawerState, scope: CoroutineScope,
+                  state: BookState, onEvent: (BookEvent) -> Unit){
+   /* ScaffoldTemplate(drawerState,scope) {
        ListElement(navController = navController,state = state,onEvent)
-   }
+   }*/
+    ListElement(navController = navController,state = state,onEvent)
 }
 
 

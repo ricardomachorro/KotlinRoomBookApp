@@ -23,6 +23,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.bookorganizationapp.R
+import com.example.bookorganizationapp.data.internal.BookEvent
+import com.example.bookorganizationapp.data.internal.BookState
+import com.example.bookorganizationapp.data.internal.LibraryState
 import com.example.bookorganizationapp.ui.main.navigation.NavigationHost
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -83,7 +86,7 @@ fun ScaffoldTemplate(drawerState: DrawerState, scope: CoroutineScope, content: @
 
 
 @Composable
-fun NewScaffoldTemplate(scope:CoroutineScope,drawerState: DrawerState,navController:NavHostController){
+fun NewScaffoldTemplate(scope:CoroutineScope, drawerState: DrawerState, navController:NavHostController,  state: BookState, library: LibraryState, onEvent: (BookEvent) -> Unit){
 
     Scaffold(
         topBar = {
@@ -99,7 +102,7 @@ fun NewScaffoldTemplate(scope:CoroutineScope,drawerState: DrawerState,navControl
                 .padding(innerPadding),
 
             ) {
-            NavigationHost(navController = navController)
+            NavigationHost(navController = navController,scope =scope,state=state,library =library,onEvent =onEvent)
         }
     }
 }

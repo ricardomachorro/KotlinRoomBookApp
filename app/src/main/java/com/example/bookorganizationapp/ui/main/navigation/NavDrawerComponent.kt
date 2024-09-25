@@ -197,7 +197,7 @@ fun MainScreen(state: BookState, libraryState: LibraryState, onEvent: (BookEvent
         }
     ){
 
-        NewScaffoldTemplate(scope=scope, drawerState = drawerState,navController=navController)
+        NewScaffoldTemplate(scope=scope, drawerState = drawerState,navController=navController,state=state,library=libraryState,onEvent = onEvent)
 
     }
 
