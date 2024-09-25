@@ -39,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -224,7 +225,8 @@ fun DrawerItem(
                 else Color.Transparent
             )
             .padding(8.dp)
-            .clickable { onItemClick(item) }
+            .clickable { onItemClick(item) },
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painterResource(id = item.selectedIcon),
