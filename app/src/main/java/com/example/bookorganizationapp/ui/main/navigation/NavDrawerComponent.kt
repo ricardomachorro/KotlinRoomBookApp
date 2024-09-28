@@ -222,7 +222,7 @@ fun DrawerItem(
             .clip(RoundedCornerShape(12))
             .background(
                 if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
-                else Color.Transparent
+                else Color.LightGray
             )
             .padding(8.dp)
             .clickable { onItemClick(item) },
