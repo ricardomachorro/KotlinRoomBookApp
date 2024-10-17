@@ -2,11 +2,15 @@ package com.example.bookorganizationapp.ui.main.common
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -44,6 +49,7 @@ import androidx.navigation.NavController
 import com.example.bookorganizationapp.data.internal.Book
 import com.example.bookorganizationapp.data.internal.BookEvent
 import com.example.bookorganizationapp.util.CalendarTools
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -52,9 +58,21 @@ fun CardBook(navController: NavController,bookObject:Book,onEvent: (BookEvent) -
 
     var isVisible by remember { mutableStateOf(false ) }
 
-    LaunchedEffect(Unit) {
-        isVisible = true
+    var isEliminated by remember { mutableStateOf(false) }
+
+
+    if(!isEliminated){
+        LaunchedEffect(Unit) {
+            isVisible = true
+        }
+    }else{
+        LaunchedEffect(isEliminated) {
+            delay(600)
+        }
     }
+
+
+
 
 
     val calendarTool: CalendarTools= CalendarTools()
@@ -72,11 +90,25 @@ fun CardBook(navController: NavController,bookObject:Book,onEvent: (BookEvent) -
         ) + scaleIn(
             animationSpec = tween(500)
         ),
-        exit = fadeOut(
-            animationSpec = tween(500)
-        ) + scaleOut(
-            animationSpec = tween(500)
-        )
+        exit =
+            if(isEliminated){
+
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(durationMillis = 600)
+                )
+
+
+
+            }else{
+
+                fadeOut(
+                    animationSpec = tween(500)
+                ) + scaleOut(
+                    animationSpec = tween(500)
+                )
+            }
+
     ) {
 
         Card(
@@ -140,9 +172,14 @@ fun CardBook(navController: NavController,bookObject:Book,onEvent: (BookEvent) -
 
                         IconButton(
                             onClick = {
+
+                                isEliminated = true
+                                isVisible = false
                                 onEvent(BookEvent.DeleteBook(bookObject))
                             }) {
-                            Icon(imageVector = Icons.Default.Delete, contentDescription = "")
+
+                                Icon(imageVector = Icons.Default.Delete, contentDescription = "")
+
                         }
 
                         Checkbox(
